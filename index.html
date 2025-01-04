@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeFlow</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>CodeFlow</h1>
+        <nav>
+            <a href="#" id="home-link">Accueil</a>
+            <a href="#" id="login-link">Connexion</a>
+            <a href="#" id="signup-link">Inscription</a>
+            <a href="#" id="tasks-link">Tâches</a>
+        </nav>
+        
+    </header>
+    <main id="app">
+        <!-- Le contenu des pages sera injecté ici -->
+    </main>
+    <footer>
+        <p>&copy; 2025 CodeFlow. Tous droits réservés.</p>
+    </footer>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+      
+        const firebaseConfig = {
+          apiKey: "AIzaSyD4gqNj_HWsqb43-860DG1kNulT5_PQqio",
+          authDomain: "codeflow-mg-2025.firebaseapp.com",
+          projectId: "codeflow-mg-2025",
+          storageBucket: "codeflow-mg-2025.appspot.com",
+          messagingSenderId: "590642954129",
+          appId: "1:590642954129:web:21544206a0dd9777eda430",
+          measurementId: "G-DVYLFMEMQ7",
+        };
+      
+        // Initialisation Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+      
+      
+        // Authentification par email et mot de passe
+        async function handleSignUp(email, password) {
+          try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            console.log("Compte créé :", userCredential.user);
+            alert("Inscription réussie !");
+          } catch (error) {
+            console.error("Erreur lors de l'inscription :", error.message);
+            alert("Erreur : " + error.message);
+          }
+        }
+      
+        async function handleLogin(email, password) {
+          try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            console.log("Connecté :", userCredential.user);
+            alert("Connexion réussie !");
+          } catch (error) {
+            console.error("Erreur de connexion :", error.message);
+            alert("Erreur : " + error.message);
+          }
+        }
+      
+        async function handleLogout() {
+          try {
+            await signOut(auth);
+            console.log("Déconnecté");
+            alert("Déconnexion réussie !");
+          } catch (error) {
+            console.error("Erreur de déconnexion :", error.message);
+            alert("Erreur : " + error.message);
+          }
+        }
+      
+        // Authentification avec Google
+        async function handleGoogleSignIn() {
+          const provider = new GoogleAuthProvider();
+          try {
+            const result = await signInWithPopup(auth, provider);
+            console.log("Connecté avec Google :", result.user);
+            alert("Connexion Google réussie !");
+          } catch (error) {
+            console.error("Erreur de connexion avec Google :", error.message);
+            alert("Erreur : " + error.message);
+          }
+        }
+      
+        // Expose les fonctions aux boutons HTML
+        window.handleSignUp = handleSignUp;
+        window.handleLogin = handleLogin;
+        window.handleLogout = handleLogout;
+        window.handleGoogleSignIn = handleGoogleSignIn;
+      </script>
+      
+    <script src="app.js"></script>
+</body>
+</html>
